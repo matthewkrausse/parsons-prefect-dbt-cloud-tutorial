@@ -92,9 +92,26 @@ project/
 
 11. Create Prefect Work Pools
 
--
+- [Follow the steps here to create two work pools. One for PROD and one for DEV](https://docs.prefect.io/v3/deploy/infrastructure-examples/serverless)
+
+12. Deploy to the cloud.
+
+- Set all the required Secrets in GitHub > Settings > Secrets > Actions > Repo Secrets
+  - GCP_PROJECT_ID
+  - GCP_SA_KEY
+  - PREFECT_API_KEY
+  - PREFECT_API_URL
+  - GOOGLE_CREDENTIALS_DOCKER
+- Create a branch on git called dev
+- Open a Pull Request
+- GitHub Actions will run the deploy_flows workflow, build/push docker image, run deployment script, and then you can go to the Prefect UI to run it.
+
+13. Wow, we did it!
 
 ## Using dbt
+
+I added a dbt folder in here for transformations.
+You can configure it to create a model of the dataset we just created in BQ.
 
 ```bash
 cd dbt
@@ -146,6 +163,7 @@ Required GitHub Secrets:
 
    - Customize flow files in `pipelines/flows/`
    - Update deployment configuration as needed
+   - The deployments are configured to take any flow, add it to the flows to deply and then loop through them.
 
 4. **CI/CD**
 
