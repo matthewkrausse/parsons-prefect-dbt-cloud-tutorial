@@ -1,9 +1,9 @@
 name: Run dbt Hourly
 
 on:
-  schedule:
-    # Runs at minute 15 of every hour (hourly)
-    - cron: "15 * * * *"
+  # schedule: Uncomment
+  # Runs at minute 15 of every hour (hourly)
+  # - cron: "15 * * * *"
   workflow_dispatch: # Also allows manual triggering
 
 permissions:
