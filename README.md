@@ -63,6 +63,12 @@ project/
 
    # Install dependencies
    uv sync
+
+   # Lets make sure this worked
+   python pipelines/flows/healthcheck.py
+
+   # You should have printed out a bunch of system information
+   # This indicates that uv installed prefect, parsons, and your other dependencies properly
    ```
 
 4. Copy `.env.example` to `.env` and fill in your environment variables
@@ -92,7 +98,7 @@ project/
 
 11. Create Prefect Work Pools
 
-- [Follow the steps here to create two work pools. One for PROD and one for DEV](https://docs.prefect.io/v3/deploy/infrastructure-examples/serverless)
+- [Follow the steps here to create two work pools. This tutorial assumes you created "prod-cloud-work-pool" and "dev-cloud-work-pool.](https://docs.prefect.io/v3/deploy/infrastructure-examples/serverless)
 
 12. Deploy to the cloud.
 
@@ -112,6 +118,7 @@ project/
 
 I added a dbt folder in here for transformations.
 You can configure it to create a model of the dataset we just created in BQ.
+But you never have to use it.
 
 ```bash
 cd dbt

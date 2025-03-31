@@ -1,6 +1,7 @@
 """
 Script to deploy Parsons + Prefect flows to a work pool.
 """
+
 from flows.example_flow import example_pipeline
 # Import additional flows here
 
@@ -33,9 +34,7 @@ print(
 # Set up environment-specific configurations
 image_name = f"parsons-prefect-{environment}"  # Updated image name to reflect purpose
 image_tag = os.environ.get("TAG", "latest")
-full_image_name = (
-    f"us-central1-docker.pkg.dev/{PROJECT_ID}/prefect-images/{image_name}:{image_tag}" # Change to your image registry/project_id etc.
-)
+full_image_name = f"us-central1-docker.pkg.dev/{PROJECT_ID}/prefect-images/{image_name}:{image_tag}"  # Change to your image registry/project_id etc.
 
 # Configure work pool based on environment
 work_pool_name = "prod-cloud-run-pool" if is_prod else "dev-cloud-run-pool"
