@@ -16,12 +16,12 @@ dotenv.load_dotenv()
 environment = os.environ.get("ENVIRONMENT")
 if environment:
     print(f"Using environment from ENVIRONMENT variable: {environment}")
-    PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
-
 else:
     # Fall back to git-based detection if environment variable is not set
     environment = determine_git_environment()
     print(f"Determined environment from git: {environment}")
+
+PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
 
 branch_name = os.environ.get("BRANCH_NAME", "local")
 is_prod = environment == "prod"
