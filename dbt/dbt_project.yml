@@ -1,0 +1,31 @@
+name: "project_name" # Change to your project name
+version: "1.0.0"
+config-version: 2
+profile: "project_name" # Change to match the name in profiles.yml
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target" # Directory for compiled artifacts
+clean-targets: # Directories to clean with `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+models:
+  project_name: # Change to match your project name
+    +materialized: view # Default materialization for models
+
+
+    # Example of configuring specific directories
+    # staging:
+    #   +materialized: view
+    #
+    # intermediate:
+    #   +materialized: view
+    #
+    # marts:
+    #   +materialized: table

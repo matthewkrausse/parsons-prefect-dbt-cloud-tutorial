@@ -1,0 +1,63 @@
+name: Run dbt Hourly
+
+on:
+  schedule:
+    # Runs at minute 15 of every hour (hourly)
+    - cron: "15 * * * *"
+  workflow_dispatch: # Also allows manual triggering
+
+permissions:
+  contents: read # Only needs read access
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create cache directories
+        run: mkdir -p /home/runner/.cache/pip
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install Dependencies with UV
+        run: |
+          uv pip install --system dbt-bigquery
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Run dbt
+        working-directory: ./dbt
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > ../keyfile.json
+          export GOOGLE_APPLICATION_CREDENTIALS="../keyfile.json"
+
+          dbt debug --no-version-check
+          dbt clean --no-version-check
+          dbt deps --no-version-check
+
+          # Run with more specific operations for hourly jobs
+          # You can customize which models run on this schedule
+          dbt run --exclude models/monthly/
+          dbt test
+        env:
+          DBT_PROFILES_DIR: ../
+
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f keyfile.json
+        timeout-minutes: 1

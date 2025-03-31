@@ -1,0 +1,24 @@
+project_name: # Change to match your project name, actually change the key here
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: your_gcp_project_id # Change to your GCP project
+      dataset: your_dev_dataset # Change to your development dataset
+      keyfile: keyfile.json # DONT CHANGE, set at runtime, Path to your GCP service account key
+      threads: 4
+      timeout_seconds: 300
+      location: US
+      priority: interactive
+
+    prod:
+      type: bigquery
+      method: service-account
+      project: your_gcp_project_id # Change to your GCP project
+      dataset: your_prod_dataset # Change to your production dataset
+      keyfile: keyfile.json # DONT CHANGE, set at runtime, Path to your GCP service account key
+      threads: 4
+      timeout_seconds: 300
+      location: US
+      priority: interactive

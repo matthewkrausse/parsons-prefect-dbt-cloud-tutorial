@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: source_name # Change to your source name
+    database: project_id # Change to BigQuery project
+    schema: dataset_name # Change to the dataset where your raw tables live
+    tables:
+      - name: table_name_1 # Change to your table name
+        description: "Description of table_name_1"
+      - name: table_name_2 # Change to your table name
+        description: "Description of table_name_2"
+
+  # Example of multiple sources
+  # - name: another_source
+  #   database: project_id
+  #   schema: another_dataset
+  #   tables:
+  #     - name: another_table
+  #       description: "Description of another_table"
+  #     - name: yet_another_table
+  #       description: "Description of yet_another_table"
+  # Example of a source with a custom schema

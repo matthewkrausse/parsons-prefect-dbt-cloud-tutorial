@@ -1,0 +1,75 @@
+name: Run dbt
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+    paths:
+      - "dbt/**" # Only trigger on changes in the dbt subdirectory
+  pull_request:
+    branches:
+      - main # Trigger on pull requests to the main branch
+    paths:
+      - "dbt/**" # Only trigger on changes in the dbt subdirectory
+      - "profiles.yml" # Also trigger on changes to the profiles.yml file
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  run:
+    runs-on: ubuntu-latest # Use a standard runner
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install Dependencies with UV
+        run: |
+          uv pip install --system dbt-bigquery
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Run dbt
+        working-directory: ./dbt
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > ../keyfile.json
+
+          export GOOGLE_APPLICATION_CREDENTIALS="../keyfile.json"
+
+          dbt debug  # Verify connectivity
+          dbt clean  # Clean the target directory
+          dbt deps   # Install dbt packages
+          dbt run    # Run your dbt models
+          dbt test   # Run the data tests
+
+        env:
+          DBT_PROFILES_DIR: ../
+
+      - name: Generate dbt docs
+        if: success()
+        working-directory: ./dbt
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > ../keyfile.json
+          export GOOGLE_APPLICATION_CREDENTIALS="../keyfile.json"
+          dbt docs generate
+          rm -f ../keyfile.json
+        env:
+          DBT_PROFILES_DIR: ../
+
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f keyfile.json
+        timeout-minutes: 1
