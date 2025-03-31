@@ -1,6 +1,7 @@
 """
 Utility functions for prefect flows.
 """
+
 import os
 import subprocess
 from google.cloud import secretmanager

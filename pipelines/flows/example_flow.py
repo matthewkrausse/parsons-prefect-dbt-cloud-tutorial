@@ -2,6 +2,7 @@
 Example Prefect flow demonstrating Parsons integration for data extraction and loading.
 Replace with your actual data pipeline logic.
 """
+
 from prefect import flow, task
 from parsons import GoogleBigQuery, Table
 from datetime import datetime
@@ -14,9 +15,9 @@ from pipelines.utilities import get_secret
 dotenv.load_dotenv()
 
 # Update with your project details or set as environment variables
-PROJECT_ID = os.getenv("GCP_PROJECT_ID") # Change
-DATASET_ID = "parsons_test" # Change
-TABLE_ID = "parsons_test" # Change
+PROJECT_ID = os.getenv("GCP_PROJECT_ID")  # Change
+DATASET_ID = "parsons_test"  # Change
+TABLE_ID = "parsons_test"  # Change
 
 
 @task(retries=3, retry_delay_seconds=10, log_prints=True)
@@ -26,7 +27,7 @@ def extract_data_with_parsons():
     Replace with your actual data extraction logic.
     """
     print("Extracting data using Parsons")
-    
+
     # Example: Create sample data with Parsons Table
     # In a real scenario, you would use a Parsons connector like:
     # van = VAN(api_key=get_secret("van_api_key"))
@@ -35,21 +36,17 @@ def extract_data_with_parsons():
     # For demonstration, we'll call get_secret to simulate data extraction
     # In a real scenario, you would use a Parsons connector like:
     # an = ActionNetwork(api_key=get_secret("action_network_api_key"))
-    
+
     # For demonstration, we'll create sample data
     data = [
-        {
-            "id": i,
-            "value": i * 10,
-            "timestamp": datetime.now().isoformat()
-        }
+        {"id": i, "value": i * 10, "timestamp": datetime.now().isoformat()}
         for i in range(1, 11)
     ]
-    
+
     # Convert to Parsons Table
     tbl = Table(data)
     print(f"Created Parsons table with {tbl.num_rows} rows")
-    
+
     return tbl
 
 
@@ -60,18 +57,18 @@ def transform_data(tbl: Table):
     Replace with your actual transformation logic.
     """
     print("Transforming data with Parsons")
-    
+
     # Example transformations using Parsons Table methods
     tbl.add_column("calculated_value", lambda row: row["value"] * 2)
-    
+
     # Demonstrate some Parsons Table operations
     print(f"Table columns: {tbl.columns}")
     print(f"First 2 rows: {tbl.head(2)}")
-    
+
     # Filter data (example)
     filtered_table = tbl.select_rows(lambda row: row["value"] > 30)
     print(f"Filtered table has {filtered_table.num_rows} rows")
-    
+
     return tbl
 
 
@@ -81,17 +78,17 @@ def load_data_with_parsons(tbl, env):
     Load data to destination using Parsons BigQuery connector.
     Replace with your actual data loading logic.
     """
-    
+
     # Add environment prefix for dev
     table_name = TABLE_ID
     dataset_name = DATASET_ID
     if env == "dev":
         dataset_name = f"dev_{dataset_name}"
-    
+
     destination = f"{dataset_name}.{table_name}"
     table_name = f"{PROJECT_ID}.{dataset_name}.{table_name}"
     print(f"Loading data to {destination} using Parsons")
-    
+
     # Initialize Parsons BigQuery connector
     # In production, you would use:
     if env == "prod":
@@ -99,8 +96,10 @@ def load_data_with_parsons(tbl, env):
         gcp_creds = get_secret("gcp_service_account")
         bq = GoogleBigQuery(credentials=gcp_creds)
     else:
-        bq = GoogleBigQuery() # local env looks for env var GOOGLE_APPLICATION_CREDENTIALS
-    
+        bq = (
+            GoogleBigQuery()
+        )  # local env looks for env var GOOGLE_APPLICATION_CREDENTIALS
+
     # Create dataset if it doesn't exist
     bq.client.create_dataset(dataset=dataset_name, exists_ok=True)
 
@@ -109,9 +108,9 @@ def load_data_with_parsons(tbl, env):
         tbl,
         table_name=table_name,
         if_exists="drop",  # Options: "fail", "append", "drop", or "truncate"
-        tmp_gcs_bucket=os.getenv('GCS_TEMP_BUCKET'),  # Replace with your GCS bucket
+        tmp_gcs_bucket=os.getenv("GCS_TEMP_BUCKET"),  # Replace with your GCS bucket
     )
-    
+
     print(f"Loaded {tbl.num_rows} rows to {destination}")
 
 
@@ -119,27 +118,27 @@ def load_data_with_parsons(tbl, env):
 def example_pipeline(env=None):
     """
     Example flow that extracts, transforms, and loads data using Parsons.
-    
+
     Args:
         env: Optional environment override ('dev' or 'prod')
     """
-    
+
     # If no parameter is provided, use a default
     if env is None:
         print("No environment specified, defaulting to dev")
         env = "dev"
-    
+
     print(f"Running in environment: {env}")
-    
+
     # Extract data using Parsons
     data = extract_data_with_parsons()
-    
+
     # Transform data using Parsons Table methods
     transformed_data = transform_data(data)
-    
+
     # Load data using Parsons BigQuery connector
     load_data_with_parsons(transformed_data, env)
-    
+
     print(f"Pipeline completed successfully for {env} environment")
 
 

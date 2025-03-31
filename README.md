@@ -63,6 +63,12 @@ project/
 
    # Install dependencies
    uv sync
+
+   # Lets make sure this worked
+   python pipelines/flows/healthcheck.py
+
+   # You should have printed out a bunch of system information
+   # This indicates that uv installed prefect
    ```
 
 4. Copy `.env.example` to `.env` and fill in your environment variables
