@@ -1,0 +1,49 @@
+name: Run pytest
+
+on:
+  push:
+    branches:
+      - main
+      - dev*
+      - feature/*
+    paths-ignore:
+      - "dbt/**"
+      - "profiles.yml"
+      - "**.md"
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "dbt/**"
+      - "profiles.yml"
+      - "**.md"
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Setup UV
+        id: setup-uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install Dependencies
+        run: |
+          uv pip install --system .[dev]  # Install package with dev dependencies
+
+      - name: Run pytest
+        run: |
+          pytest tests/ -v
