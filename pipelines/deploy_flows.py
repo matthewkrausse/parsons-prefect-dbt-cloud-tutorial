@@ -8,7 +8,7 @@ from prefect.docker import DockerImage
 import os
 import dotenv
 
-from flows.utilities import determine_git_environment
+from pipelines.utilities import determine_git_environment
 
 dotenv.load_dotenv()
 

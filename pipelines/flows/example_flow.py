@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 import dotenv
 
-from utilities import get_secret
+from pipelines.utilities import get_secret
 
 # Load environment variables from .env file
 dotenv.load_dotenv()
