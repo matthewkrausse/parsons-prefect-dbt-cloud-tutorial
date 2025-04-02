@@ -60,6 +60,10 @@ graph TD
 
 Setting up this pipeline template involves configuring credentials and settings across several services and files. This summary outlines the key areas you'll need to address, with detailed steps following in the main guide:
 
+## IMPORTANT
+
+Make sure to not commit any secrets, api keys, etc. to version control. the .gitignore file is set up to ignore .env files for instance. Don't hard code any sensitive keys into code.
+
 - **Cloud Platform Accounts:** Creating accounts and enabling services/billing for Prefect Cloud and Google Cloud Platform (GCP).
 - **GCP Resources:** Creating and configuring specific GCP resources like Service Accounts (with appropriate roles/permissions), Cloud Storage Buckets, Secret Manager (for storing secrets), and Artifact Registry (for Docker images).
 - **Local Development Environment:** Setting up Python (`uv`, virtual environment), configuring local environment variables (like `GOOGLE_APPLICATION_CREDENTIALS`), downloading Docker Desktop, and authenticating Docker with GCP Artifact Registry (`gcloud auth configure-docker`).
@@ -202,12 +206,12 @@ This section outlines all the necessary steps to get your project environment, a
 
 - **GitHub Secrets:** In your GitHub repository, go to `Settings > Secrets and variables > Actions`. Create the following **Repository Secrets**:
   - `GCP_PROJECT_ID`: Your Google Cloud Project ID.
-  - `GCP_SA_KEY`: The _entire content_ of your downloaded GCP service account JSON key file.
+  - `GOOGLE_APPLICATION_CREDENTIALS`: The _entire content_ of your downloaded GCP service account JSON key file. (Used to push to Google Artifact Registry or interact with GCP)
   - `PREFECT_API_KEY`: Your Prefect Cloud API key.
   - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL.
-  - `GOOGLE_CREDENTIALS_DOCKER`: The _entire content_ of your downloaded GCP service account JSON key file (again, often needed specifically for Docker builds within Actions to push to Google Artifact Registry or interact with GCP). _Verify if this duplicate is truly necessary based on your `deploy_flow.yaml` workflow._
   - `GAR_LOCATION`: The location of your Artifact Registry repo (e.g., `us-central1`).
   - `GAR_REPOSITORY`: The name of your Artifact Registry repo (e.g., `my-pipelines-repo`).
+  - `IMAGE_NAME`: The name of your Docker Image
 - **Branching Strategy:** The CI/CD is often configured to trigger on specific branches (e.g., `dev`, `main`). Ensure your branching strategy aligns with the triggers in `.github/workflows/*.yaml`. The example suggests creating a `dev` branch and opening a Pull Request.
 
 **12. Deploy to Prefect Cloud via CI/CD:**
