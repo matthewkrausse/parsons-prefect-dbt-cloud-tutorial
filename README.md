@@ -11,6 +11,51 @@ This template provides a standardized structure for data engineers and activists
 
 ---
 
+```mermaid
+
+graph TD
+    A[Clone the Repository] --> B[Create Cloud Accounts]
+    B --> C[Set Up Local Python Environment]
+    C --> D[Authenticate with Prefect Cloud]
+    D --> E[Configure GCP Authentication]
+    E --> F[Set Up Required GCP Resources]
+    F --> G[Configure Project Environment Variables]
+    G --> H[Configure Project-Specific Settings]
+    H --> I[Initial Local Test Run]
+    I --> J[Set Up Prefect Cloud Infrastructure]
+    J --> K[Configure CI/CD]
+    K --> L[Deploy to Prefect Cloud]
+
+    subgraph GCP Resources
+        F1[Create Service Account]
+        F2[Create GCS Bucket]
+        F3[Enable Secret Manager]
+        F4[Enable Artifact Registry]
+    end
+    F --> F1
+    F --> F2
+    F --> F3
+    F --> F4
+
+    subgraph CI/CD
+        K1[Create GitHub Secrets]
+        K2[Ensure Branching Strategy]
+    end
+    K --> K1
+    K --> K2
+
+    subgraph Project-Specific Settings
+        H1[Update dbt Project Name]
+        H2[Update Python Files]
+        H3[Ensure Dockerfile Meets Needs]
+    end
+    H --> H1
+    H --> H2
+    H --> H3
+
+    L --> M[Check Prefect Cloud UI for Deployed Flows]
+```
+
 ## Configuration Overview
 
 Setting up this pipeline template involves configuring credentials and settings across several services and files. This summary outlines the key areas you'll need to address, with detailed steps following in the main guide:
