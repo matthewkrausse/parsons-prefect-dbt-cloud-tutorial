@@ -17,7 +17,7 @@ Setting up this pipeline template involves configuring credentials and settings 
 
 - **Cloud Platform Accounts:** Creating accounts and enabling services/billing for Prefect Cloud and Google Cloud Platform (GCP).
 - **GCP Resources:** Creating and configuring specific GCP resources like Service Accounts (with appropriate roles/permissions), Cloud Storage Buckets, Secret Manager (for storing secrets), and Artifact Registry (for Docker images).
-- **Local Development Environment:** Setting up Python (`uv`, virtual environment), configuring local environment variables (like `GOOGLE_APPLICATION_CREDENTIALS`), and authenticating Docker with GCP Artifact Registry (`gcloud auth configure-docker`).
+- **Local Development Environment:** Setting up Python (`uv`, virtual environment), configuring local environment variables (like `GOOGLE_APPLICATION_CREDENTIALS`), downloading Docker Desktop, and authenticating Docker with GCP Artifact Registry (`gcloud auth configure-docker`).
 - **Project `.env` File:** Populating this file with specific API keys, resource names, project IDs, and file paths required for local execution and connections (e.g., `PREFECT_API_KEY`, `PREFECT_API_URL`, `GCP_PROJECT_ID`, `GAR_LOCATION`, `GAR_REPOSITORY`, `GCS_TEMP_BUCKET`).
 - **Project Code Configuration:** Updating project-specific names or settings within files like `dbt/dbt_project.yml` and potentially within Python pipeline files (`pipelines/flows/`).
 - **Prefect Cloud Setup:** Logging in via the CLI and configuring Work Pools within the Prefect Cloud UI to manage execution environments.
