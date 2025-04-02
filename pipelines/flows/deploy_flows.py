@@ -22,7 +22,11 @@ else:
     environment = determine_git_environment()
     print(f"Determined environment from git: {environment}")
 
-PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
+# Get Docker image configuration from environment variables
+GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
+GAR_LOCATION = os.environ.get("GAR_LOCATION", "us-central1")
+GAR_REPOSITORY = os.environ.get("GAR_REPOSITORY", "prefect-images")
+IMAGE_NAME = os.environ.get("IMAGE_NAME", "parsons-prefect-pipeline")
 
 branch_name = os.environ.get("BRANCH_NAME", "local")
 is_prod = environment == "prod"
@@ -32,9 +36,10 @@ print(
 )
 
 # Set up environment-specific configurations
-image_name = f"parsons-prefect-{environment}"  # Updated image name to reflect purpose
-image_tag = os.environ.get("TAG", "latest")
-full_image_name = f"us-central1-docker.pkg.dev/{PROJECT_ID}/prefect-images/{image_name}:{image_tag}"  # Change to your image registry/project_id etc.
+image_tag = os.environ.get("TAG", f"{environment}-latest")
+full_image_name = f"{GAR_LOCATION}-docker.pkg.dev/{GCP_PROJECT_ID}/{GAR_REPOSITORY}/{IMAGE_NAME}-{environment}:{image_tag}"
+
+print(f"Using Docker image: {full_image_name}")
 
 # Configure work pool based on environment
 work_pool_name = "prod-cloud-run-pool" if is_prod else "dev-cloud-run-pool"
