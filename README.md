@@ -108,7 +108,7 @@ This section outlines all the necessary steps to get your project environment, a
   source .venv/bin/activate  # On macOS/Linux
   # or .venv\Scripts\activate on Windows
   ```
-- The `pyproject.toml` is where we have our project's dependencies and is where `iv` looks to know what to install
+- The `pyproject.toml` is where we have our project's dependencies and is where `uv` looks to know what to install
 - Install project dependencies using `uv`.
   ```bash
   uv sync
