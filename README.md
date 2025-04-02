@@ -117,8 +117,15 @@ This section outlines all the necessary steps to get your project environment, a
 **4. Authenticate with Prefect Cloud:**
 
 - Log in to your Prefect Cloud account from the command line. This will often involve opening a web browser for authentication or using an API key.
+
   ```bash
   prefect cloud login
+  ```
+
+- Run the healthcheck script to verify dependencies are installed correctly.
+  ```bash
+  python pipelines/flows/healthcheck.py
+  # Look for output confirming system information.
   ```
 
 **5. Configure Google Cloud Platform (GCP) Authentication:**
@@ -180,11 +187,6 @@ This section outlines all the necessary steps to get your project environment, a
 
 **9. Initial Local Test Run:**
 
-- Run the healthcheck script to verify dependencies are installed correctly.
-  ```bash
-  python pipelines/flows/healthcheck.py
-  # Look for output confirming system information.
-  ```
 - Run the example flow locally to test connections and basic logic. This run will be tracked in the Prefect Cloud UI.
   ```bash
   python pipelines/flows/example_flow.py
