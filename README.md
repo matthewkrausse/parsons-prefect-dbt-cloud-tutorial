@@ -40,15 +40,17 @@ project/
 
 ## Getting Started
 
-1. Clone this template
+1. Clone this template TODO: explain that this a different repo
 
-2. Update project-specific configurations:
+2. Create a prefect cloud account. app.prefect.cloud
+
+3. Update project-specific configurations:
 
    - Rename project in `dbt_project.yml`
    - Update GCP project info in pipeline files
    - Customize models and pipelines as needed
 
-3. Set up Python environment:
+4. Set up Python environment:
 
    ```bash
    # Install uv
@@ -64,6 +66,9 @@ project/
    # Install dependencies
    uv sync
 
+   # Auth into prefect cloud
+   prefect cloud login
+
    # Lets make sure this worked
    python pipelines/flows/healthcheck.py
 
@@ -71,38 +76,48 @@ project/
    # This indicates that uv installed prefect, parsons, and your other dependencies properly
    ```
 
-4. Copy `.env.example` to `.env` and fill in your environment variables
+5. Copy `.env.example` to `.env` and fill in your environment variables
 
-5. Configure GCP authentication:
+6. Configure GCP authentication: FIND GUIDE
 
+   - Create Google Cloud Project
+   - Billing if needed
    - Create service account with appropriate permissions
+     - BigQuery Editor
+     - Cloud Storage Creator
+     - Secret Viewer
    - Download JSON key file
    - Set path in GOOGLE_APPLICATION_CREDENTIALS environment variable
    - Create and add a gcs_temp_bucket for BigQuery Copying, add as env var or hard code
+   - Create Secrets in Google Secret Manager
 
-6. Set Prefect Creds in .env or use the CLI to login
+7. Set Prefect Creds in .env or use the CLI to login
 
    - `prefect cloud login`
    - Login in using the web browser or api key
 
-7. Review example_flow.py and update any lines that have a comment "CHANGE"
+8. Review example_flow.py and update any lines that have a comment "CHANGE"
 
-8. Run example_flow.py
+9. Run example_flow.py
 
    - `python pipelines/flows/example_flow.py`
 
-9. This just ran locally but everything is tracked using the [Prefect UI](https://app.prefect.cloud/).
-   Let's go take a look.
+10. This just ran locally but everything is tracked using the [Prefect UI](https://app.prefect.cloud/).
+    Let's go take a look.
 
-10. Let's run it in the Cloud
+11. Let's run it in the Cloud
 
-11. Create Prefect Work Pools
+12. Create Prefect Work Pools
 
-- [Follow the steps here to create two work pools. This tutorial assumes you created "prod-cloud-work-pool" and "dev-cloud-work-pool.](https://docs.prefect.io/v3/deploy/infrastructure-examples/serverless)
+- [Follow the steps here to create two work pools. This tutorial assumes you created "prod-cloud-work-pool" and "dev-cloud-work-pool".](https://docs.prefect.io/v3/deploy/infrastructure-examples/serverless)
+
+add docker
+
+Run the deploy locally:
 
 12. Deploy to the cloud.
 
-- Set all the required Secrets in GitHub > Settings > Secrets > Actions > Repo Secrets
+- Set all the required Secrets in GitHub > Settings > Secrets > Actions > Repository Secrets
   - GCP_PROJECT_ID
   - GCP_SA_KEY
   - PREFECT_API_KEY
@@ -134,7 +149,7 @@ dbt test         # Run all tests
 python pipelines/flows/example_flow.py
 
 # Deploy flows
-python pipelines/deploy_flows.py
+python pipelines/flows/deploy_flows.py
 ```
 
 ## Deploying with CI/CD
