@@ -174,24 +174,25 @@ This section outlines all the necessary steps to get your project environment, a
   ```
 - Edit the `.env` file and fill in the required values:
   - `GOOGLE_APPLICATION_CREDENTIALS`: Path to your service account key file (for local runs if not set globally).
-  - `GCS_TEMP_BUCKET`: The name of the GCS bucket you created.
-  - `PREFECT_API_KEY`: Your Prefect Cloud API key (alternative to `prefect cloud login`). Get this from your Prefect Cloud profile.
-  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL (e.g., `https://api.prefect.cloud/api/accounts/[ACCOUNT_ID]/workspaces/[WORKSPACE_ID]`).
   - `GCP_PROJECT_ID`: Your Google Cloud Project ID.
+  - `GCS_TEMP_BUCKET`: The name of the GCS bucket you created.
   - `GAR_LOCATION`: The location of your Artifact Registry repo (e.g., `us-central1`).
   - `GAR_REPOSITORY`: The name of your Artifact Registry repo (e.g., `my-pipelines-repo`).
+  - `IMAGE_NAME`: The name of your Docker Image (e.g., `my-pipeline-image`).
+  - `PREFECT_API_KEY`: Your Prefect Cloud API key (alternative to `prefect cloud login`). Get this from your Prefect Cloud profile.
+  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL (e.g., `https://api.prefect.cloud/api/accounts/[ACCOUNT_ID]/workspaces/[WORKSPACE_ID]`).
   - _Add any other environment variables required by your specific pipelines or dbt connections._
   - **Important:** Ensure `.env` is listed in your `.gitignore` file to prevent accidentally committing secrets.
 
 **8. Configure Project-Specific Settings (Code):**
 
-- **dbt:** Rename the project in `dbt/dbt_project.yml` from the template default to your actual project name.
+- **dbt:** Optional: Rename the project in `dbt/dbt_project.yml` from the template default to your actual project name.
 - **Pipelines:** Update any hardcoded GCP project IDs or resource names in the Python files within `pipelines/flows/` (though using environment variables from `.env` is preferred). Review `example_flow.py` and update lines marked with `"# CHANGE"`.
 - **Docker:** Ensure your `Dockerfile` meets your project's needs.
 
 **9. Initial Local Test Run:**
 
-- Run the example flow locally to test connections and basic logic. This run will be tracked in the Prefect Cloud UI.
+- Run the example flow locally to test connections and basic logic. This run will be tracked in the Prefect Cloud UI. If something goes wrong it's likely a issue in your `.env` file.
   ```bash
   python pipelines/flows/example_flow.py
   ```
@@ -205,13 +206,14 @@ This section outlines all the necessary steps to get your project environment, a
 **11. Configure CI/CD (GitHub Actions Secrets):**
 
 - **GitHub Secrets:** In your GitHub repository, go to `Settings > Secrets and variables > Actions`. Create the following **Repository Secrets**:
-  - `GCP_PROJECT_ID`: Your Google Cloud Project ID.
   - `GOOGLE_APPLICATION_CREDENTIALS`: The _entire content_ of your downloaded GCP service account JSON key file. (Used to push to Google Artifact Registry or interact with GCP)
-  - `PREFECT_API_KEY`: Your Prefect Cloud API key.
-  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL.
+  - `GCP_PROJECT_ID`: Your Google Cloud Project ID.
+  - `GCS_TEMP_BUCKET`: The name of the GCS bucket you created.
   - `GAR_LOCATION`: The location of your Artifact Registry repo (e.g., `us-central1`).
   - `GAR_REPOSITORY`: The name of your Artifact Registry repo (e.g., `my-pipelines-repo`).
-  - `IMAGE_NAME`: The name of your Docker Image
+  - `IMAGE_NAME`: The name of your Docker Image (e.g., `my-pipeline-image`).
+  - `PREFECT_API_KEY`: Your Prefect Cloud API key.
+  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL.
 - **Branching Strategy:** The CI/CD is often configured to trigger on specific branches (e.g., `dev`, `main`). Ensure your branching strategy aligns with the triggers in `.github/workflows/*.yaml`. The example suggests creating a `dev` branch and opening a Pull Request.
 
 **12. Deploy to Prefect Cloud via CI/CD:**
@@ -230,7 +232,7 @@ This section outlines all the necessary steps to get your project environment, a
   - Build a Docker image containing your flow code and dependencies using the `Dockerfile`.
   - Push the Docker image to your specified Google Artifact Registry repository.
   - Run the `pipelines/flows/deploy_flows.py` script, which registers your flows with Prefect Cloud and associates them with the appropriate work pool and image.
-- Once the action completes successfully, go to the Prefect Cloud UI. You should see your deployed flows under "Deployments". You can now trigger runs directly from the UI, which will execute using the pushed Docker image on the infrastructure defined by your work pool (e.g., Google Cloud Run).
+- Once the action completes successfully, go to the Prefect Cloud UI. You should see your deployed flows under "Deployments". You can now trigger runs directly from the UI, which will execute using the pushed Docker image on the infrastructure defined by your work pool (e.g., Google Cloud Run). If running locally, you must build and push the Docker Image yourself.
 
 You have now completed the full setup process!
 
@@ -239,6 +241,8 @@ You have now completed the full setup process!
 ## Building and Pushing the Docker Image Locally (Optional)
 
 While the CI/CD pipeline (`deploy_flow.yaml`) handles building and pushing the Docker image automatically, you might want to do this manually for testing the container environment or for deployments outside the standard CI/CD process.
+
+Our Dockerfile is a bit complex but its effecient and helps reduce build time.
 
 **Prerequisites:**
 
