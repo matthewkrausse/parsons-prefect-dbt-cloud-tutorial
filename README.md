@@ -36,13 +36,16 @@ This section outlines all the necessary steps to get your project environment, a
 - Obtain a copy of this template project on your local machine.
   ```bash
   # [TODO: Add specific cloning instructions if this is a template repository on GitHub]
-  # Example: git clone <repository-url> your-project-name
-  # cd your-project-name
+  # Example:
+  
+  git clone https://github.com/matthewkrausse/parsons-prefect-dbt-cloud-tutorial.git your-project-name
+
+  cd your-project-name
   ```
 
 **2. Create Cloud Accounts:**
 
-- **Prefect Cloud:** Sign up for an account at [app.prefect.cloud](https://app.prefect.cloud/).
+- **Prefect Cloud:** Sign up for a free account at [app.prefect.cloud](https://app.prefect.cloud/).
 - **Google Cloud Platform (GCP):**
   - Create a new Google Cloud Project if you don't have one already.
   - Ensure billing is enabled for the project if required by the services you intend to use (e.g., BigQuery, Cloud Storage, Secret Manager, Artifact Registry, Cloud Run).
