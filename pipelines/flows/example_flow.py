@@ -8,7 +8,7 @@ from parsons import GoogleBigQuery, Table
 import os
 import dotenv
 
-from utilities import get_secret
+from pipelines.flows.utilities import get_secret
 
 # Load environment variables from .env file
 dotenv.load_dotenv()

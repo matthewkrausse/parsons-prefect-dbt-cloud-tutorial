@@ -80,7 +80,7 @@ def test_load_data_with_parsons_prod(
     load_data_with_parsons(sample_parsons_table, "prod")
 
     # Verify get_secret was called
-    mock_get_secret.assert_called_once_with("gcp_service_account")
+    mock_get_secret.assert_called_once_with("google_application_credentials")
 
     # Verify dataset creation without dev prefix
     mock_bq_instance.client.create_dataset.assert_called_once_with(
