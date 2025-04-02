@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from parsons import Table
-from datetime import datetime
 
 from pipelines.flows.example_flow import (
     example_pipeline,
@@ -32,6 +31,7 @@ def test_extract_data_with_parsons():
     assert set(result.columns) == {"name", "party", "age"}
     assert all(isinstance(row["age"], int) for row in result)
     assert all(isinstance(row["name"], str) for row in result)
+
 
 def test_transform_data(sample_parsons_table):
     """Test that transform_data modifies the table as expected."""
