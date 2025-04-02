@@ -15,9 +15,11 @@ from pipelines.flows.example_flow import (
 def sample_parsons_table():
     """Create a sample Parsons Table for testing."""
     data = [
-        {"id": i, "value": i * 10, "timestamp": datetime.now().isoformat()}
-        for i in range(1, 11)
+        {"name": "John Smith", "party": "Democrat", "age": 42},
+        {"name": "Sarah Johnson", "party": "Republican", "age": 35},
+        {"name": "Miguel Rodriguez", "party": "Independent", "age": 29},
     ]
+
     return Table(data)
 
 
@@ -26,19 +28,20 @@ def test_extract_data_with_parsons():
     result = extract_data_with_parsons()
 
     assert isinstance(result, Table)
-    assert result.num_rows == 10
-    assert set(result.columns) == {"id", "value", "timestamp"}
-    assert all(isinstance(row["id"], int) for row in result)
-    assert all(isinstance(row["value"], int) for row in result)
-
+    assert result.num_rows == 3
+    assert set(result.columns) == {"name", "party", "age"}
+    assert all(isinstance(row["age"], int) for row in result)
+    assert all(isinstance(row["name"], str) for row in result)
 
 def test_transform_data(sample_parsons_table):
-    """Test that transform_data correctly transforms the data."""
+    """Test that transform_data modifies the table as expected."""
     result = transform_data(sample_parsons_table)
 
-    assert "calculated_value" in result.columns
-    assert all(row["calculated_value"] == row["value"] * 2 for row in result)
-    assert result.num_rows == sample_parsons_table.num_rows
+    assert isinstance(result, Table)
+    assert result.num_rows == 3
+    assert "name_upper" in result.columns
+    assert all(isinstance(row["name_upper"], str) for row in result)
+    assert all(row["name_upper"] == row["name"].upper() for row in result)
 
 
 @patch("pipelines.flows.example_flow.GoogleBigQuery")
