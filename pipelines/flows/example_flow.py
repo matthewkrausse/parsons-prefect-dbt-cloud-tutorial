@@ -15,7 +15,7 @@ from utilities import get_secret
 dotenv.load_dotenv()
 
 # Update with your project details or set as environment variables
-PROJECT_ID = os.getenv("GCP_PROJECT_ID")  # Change
+PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 DATASET_ID = "parsons_test"  # Change
 TABLE_ID = "parsons_test"  # Change
 
@@ -93,7 +93,7 @@ def load_data_with_parsons(tbl, env):
     # In production, you would use:
     if env == "prod":
         # Use service account credentials for production
-        gcp_creds = get_secret("gcp_service_account")
+        gcp_creds = get_secret("google_application_credentials")
         bq = GoogleBigQuery(credentials=gcp_creds)
     else:
         bq = (

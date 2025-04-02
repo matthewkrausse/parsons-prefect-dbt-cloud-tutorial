@@ -3,6 +3,7 @@ Script to deploy Parsons + Prefect flows to a work pool.
 """
 
 from example_flow import example_pipeline
+from healthcheck import healthcheck
 # Import additional flows here
 
 from prefect.docker import DockerImage
@@ -46,6 +47,11 @@ work_pool_name = "prod-cloud-run-pool" if is_prod else "dev-cloud-run-pool"
 
 # Define a list of flows to deploy
 flows_to_deploy = [
+    {
+        "flow": healthcheck,
+        "name": "Parsons Data Pipeline Healthcheck",
+        "schedule": None,  # No schedule for dev
+    },
     {
         "flow": example_pipeline,
         "name": "Parsons Data Pipeline Example",
