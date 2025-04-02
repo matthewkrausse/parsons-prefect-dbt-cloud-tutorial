@@ -5,7 +5,6 @@ Replace with your actual data pipeline logic.
 
 from prefect import flow, task
 from parsons import GoogleBigQuery, Table
-from datetime import datetime
 import os
 import dotenv
 
@@ -33,14 +32,11 @@ def extract_data_with_parsons():
     # van = VAN(api_key=get_secret("van_api_key"))
     # activist_data = van.get_activists()
 
-    # For demonstration, we'll call get_secret to simulate data extraction
-    # In a real scenario, you would use a Parsons connector like:
-    # an = ActionNetwork(api_key=get_secret("action_network_api_key"))
-
     # For demonstration, we'll create sample data
     data = [
-        {"id": i, "value": i * 10, "timestamp": datetime.now().isoformat()}
-        for i in range(1, 11)
+        {"name": "John Smith", "party": "Democrat", "age": 42},
+        {"name": "Sarah Johnson", "party": "Republican", "age": 35},
+        {"name": "Miguel Rodriguez", "party": "Independent", "age": 29},
     ]
 
     # Convert to Parsons Table
