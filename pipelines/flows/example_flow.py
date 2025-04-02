@@ -55,15 +55,8 @@ def transform_data(tbl: Table):
     print("Transforming data with Parsons")
 
     # Example transformations using Parsons Table methods
-    tbl.add_column("calculated_value", lambda row: row["value"] * 2)
-
-    # Demonstrate some Parsons Table operations
-    print(f"Table columns: {tbl.columns}")
-    print(f"First 2 rows: {tbl.head(2)}")
-
-    # Filter data (example)
-    filtered_table = tbl.select_rows(lambda row: row["value"] > 30)
-    print(f"Filtered table has {filtered_table.num_rows} rows")
+    tbl.add_column("name_upper", lambda row: row["name"].upper())
+    print(tbl)
 
     return tbl
 
