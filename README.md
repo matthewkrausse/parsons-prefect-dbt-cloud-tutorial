@@ -79,10 +79,11 @@ This section outlines all the necessary steps to get your project environment, a
 **1. Clone the Repository:**
 
 - Obtain a copy of this template project on your local machine.
+
   ```bash
   # [TODO: Add specific cloning instructions if this is a template repository on GitHub]
   # Example:
-  
+
   git clone https://github.com/matthewkrausse/parsons-prefect-dbt-cloud-tutorial.git your-project-name
 
   cd your-project-name
@@ -107,6 +108,7 @@ This section outlines all the necessary steps to get your project environment, a
   source .venv/bin/activate  # On macOS/Linux
   # or .venv\Scripts\activate on Windows
   ```
+- The `pyproject.toml` is where we have our project's dependencies and is where `iv` looks to know what to install
 - Install project dependencies using `uv`.
   ```bash
   uv sync
