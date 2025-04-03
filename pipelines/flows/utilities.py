@@ -64,7 +64,13 @@ def get_secret(project_id="your-gcp-project-id", secret_id=None, version_id="lat
     # Load environment variables from .env file
     dotenv.load_dotenv()
 
-    # First check if the secret exists as an environment variable
+    # Check for project_id in environment variables
+    env_project_id = os.environ.get("GCP_PROJECT_ID")
+    if env_project_id:
+        print("Using project_id from environment variables")
+        project_id = env_project_id
+
+    # Check if the secret exists as an environment variable
     env_value = os.environ.get(secret_id.upper())
     if env_value:
         print(f"Using {secret_id} from environment variables")
