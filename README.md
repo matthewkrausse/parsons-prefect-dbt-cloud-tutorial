@@ -131,9 +131,6 @@ Follow these steps:
     ```bash
     # If the default branch is 'main'
     git push -u origin main
-
-    # If the default branch is 'master'
-    # git push -u origin master
     ```
 * You may be prompted for your GitHub username and password (or token) if using HTTPS.
 
