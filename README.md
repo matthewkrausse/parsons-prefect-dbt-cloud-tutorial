@@ -207,14 +207,16 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
 
 **6. Set Up Required GCP Resources:**
 
+You will need to enable these APIs. You should be prompted, if they aren't already enabled. 
+
 - **Google Cloud Storage (GCS) Bucket:**
-  - Create a GCS bucket. This is often used by BigQuery for loading data or as a temporary storage area.
+  - Create a GCS bucket. 'Navigation Menu' > 'Cloud Storage' > 'Buckets' > 'Create Bucket'. This is often used by BigQuery for loading data or as a temporary storage area.
   - Note the name of this bucket (e.g., `your-gcs-temp-bucket`).
 - **Google Secret Manager:**
-  - Enable the Secret Manager API in your GCP project.
+  - Enable the Secret Manager API in your GCP project. Search for 'Secret Manager' > '+ Create Secret'
   - Create secrets for sensitive information your pipelines will need (e.g., API keys for VAN, ActionNetwork, database passwords). You will reference these secret names in your code or configuration.
 - **Google Artifact Registry (GAR):**
-  - Enable the Artifact Registry API.
+  - Enable the Artifact Registry API. '+ Create Repository' > Format: Docker > Set Region > Create
   - Create a Docker repository in GAR to store your container images. Note its location (e.g., `us-central1`) and repository name (e.g., `my-pipelines-repo`). The full path will look like: `<location>-docker.pkg.dev/<your-gcp-project-id>/<repository-name>`.
 
 **7. Configure Project Environment Variables (`.env` file):**
