@@ -37,7 +37,7 @@ print(
 )
 
 # Set up environment-specific configurations
-image_tag = os.environ.get("TAG", f"{environment}-latest")
+image_tag = os.environ.get("TAG", "latest")
 full_image_name = f"{GAR_LOCATION}-docker.pkg.dev/{GCP_PROJECT_ID}/{GAR_REPOSITORY}/{IMAGE_NAME}-{environment}:{image_tag}"
 
 print(f"Using Docker image: {full_image_name}")

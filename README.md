@@ -269,7 +269,7 @@ Our Dockerfile is a bit complex but its effecient and helps reduce build time.
     export GCP_PROJECT_ID="<your-gcp-project-id>"
     export GAR_LOCATION="<your-gar-location>" # e.g., us-central1
     export GAR_REPOSITORY="<your-gar-repository-name>" # e.g., my-pipelines-repo
-    export IMAGE_NAME="<your-image-name>" # e.g., parsons-prefect-pipeline
+    export IMAGE_NAME="<your-image-name>" # if dev -dev if prod -prod e.g., parsons-prefect-pipeline-dev or parsons-prefect-pipeline-prod
     export IMAGE_TAG="<your-tag>" # e.g., latest, v1.0, git sha
 
     export FULL_IMAGE_NAME="${GAR_LOCATION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${IMAGE_TAG}"
@@ -277,6 +277,9 @@ Our Dockerfile is a bit complex but its effecient and helps reduce build time.
     ```
 
 3.  **Build the Docker Image:**
+
+    First, Docker Desktop needs to be installed and running.
+
     Run the build command from the root directory of your project (where the `Dockerfile` is located).
 
     ```bash
