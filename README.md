@@ -266,6 +266,8 @@ You will need to enable these APIs. You should be prompted, if they aren't alrea
 **12. Deploy to Prefect Cloud via CI/CD:**
 
 - Commit your changes (ensure `.env` is gitignored!) and any code modifications.
+
+You can manually trigger these Workflows in Actions. When you want to change the code, create a branch and follow the below steps.
 - Create a branch (e.g., `dev` if that's what your workflow triggers on).
   ```bash
   git checkout -b dev
@@ -280,6 +282,8 @@ You will need to enable these APIs. You should be prompted, if they aren't alrea
   - Push the Docker image to your specified Google Artifact Registry repository.
   - Run the `pipelines/flows/deploy_flows.py` script, which registers your flows with Prefect Cloud and associates them with the appropriate work pool and image.
 - Once the action completes successfully, go to the Prefect Cloud UI. You should see your deployed flows under "Deployments". You can now trigger runs directly from the UI, which will execute using the pushed Docker image on the infrastructure defined by your work pool (e.g., Google Cloud Run). If running locally, you must build and push the Docker Image yourself.
+
+- You can also go to your logs in Google Cloud to check that it ran in the cloud!
 
 You have now completed the full setup process!
 
