@@ -164,6 +164,10 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
   ```bash
   uv sync
   ```
+- Copy the example environment file:
+  ```bash
+  cp .env.example .env
+  ```
 
 **4. Authenticate with Prefect Cloud:**
 
@@ -215,10 +219,6 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
 
 **7. Configure Project Environment Variables (`.env` file):**
 
-- Copy the example environment file:
-  ```bash
-  cp .env.example .env
-  ```
 - Edit the `.env` file and fill in the required values:
   - `GOOGLE_APPLICATION_CREDENTIALS`: Path to your service account key file (for local runs if not set globally).
   - `GCP_PROJECT_ID`: Your Google Cloud Project ID.
