@@ -38,12 +38,12 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: Run dbt
         working-directory: ./dbt
         run: |
-          echo '${{ secrets.GCP_SA_KEY }}' > ../keyfile.json
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' > ../keyfile.json
           export GOOGLE_APPLICATION_CREDENTIALS="../keyfile.json"
 
           dbt debug --no-version-check
