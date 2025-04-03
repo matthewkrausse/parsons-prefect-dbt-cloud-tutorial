@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import MagicMock, patch
-from pipelines.utilities import get_secret
+from pipelines.flows.utilities import get_secret
 
 
 @pytest.fixture

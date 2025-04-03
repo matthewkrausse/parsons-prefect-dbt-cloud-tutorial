@@ -2,14 +2,15 @@
 Script to deploy Parsons + Prefect flows to a work pool.
 """
 
-from flows.example_flow import example_pipeline
+from example_flow import example_pipeline
+from healthcheck import healthcheck
 # Import additional flows here
 
 from prefect.docker import DockerImage
 import os
 import dotenv
 
-from pipelines.utilities import determine_git_environment
+from pipelines.flows.utilities import determine_git_environment
 
 dotenv.load_dotenv()
 
@@ -22,7 +23,11 @@ else:
     environment = determine_git_environment()
     print(f"Determined environment from git: {environment}")
 
-PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
+# Get Docker image configuration from environment variables
+GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
+GAR_LOCATION = os.environ.get("GAR_LOCATION", "us-central1")
+GAR_REPOSITORY = os.environ.get("GAR_REPOSITORY", "prefect-images")
+IMAGE_NAME = os.environ.get("IMAGE_NAME", "parsons-prefect-pipeline")
 
 branch_name = os.environ.get("BRANCH_NAME", "local")
 is_prod = environment == "prod"
@@ -32,15 +37,21 @@ print(
 )
 
 # Set up environment-specific configurations
-image_name = f"parsons-prefect-{environment}"  # Updated image name to reflect purpose
 image_tag = os.environ.get("TAG", "latest")
-full_image_name = f"us-central1-docker.pkg.dev/{PROJECT_ID}/prefect-images/{image_name}:{image_tag}"  # Change to your image registry/project_id etc.
+full_image_name = f"{GAR_LOCATION}-docker.pkg.dev/{GCP_PROJECT_ID}/{GAR_REPOSITORY}/{IMAGE_NAME}-{environment}:{image_tag}"
+
+print(f"Using Docker image: {full_image_name}")
 
 # Configure work pool based on environment
 work_pool_name = "prod-cloud-run-pool" if is_prod else "dev-cloud-run-pool"
 
 # Define a list of flows to deploy
 flows_to_deploy = [
+    {
+        "flow": healthcheck,
+        "name": "Parsons Data Pipeline Healthcheck",
+        "schedule": None,  # No schedule for dev
+    },
     {
         "flow": example_pipeline,
         "name": "Parsons Data Pipeline Example",

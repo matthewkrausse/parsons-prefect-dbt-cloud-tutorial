@@ -5,17 +5,16 @@ Replace with your actual data pipeline logic.
 
 from prefect import flow, task
 from parsons import GoogleBigQuery, Table
-from datetime import datetime
 import os
 import dotenv
 
-from pipelines.utilities import get_secret
+from pipelines.flows.utilities import get_secret
 
 # Load environment variables from .env file
 dotenv.load_dotenv()
 
 # Update with your project details or set as environment variables
-PROJECT_ID = os.getenv("GCP_PROJECT_ID")  # Change
+PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 DATASET_ID = "parsons_test"  # Change
 TABLE_ID = "parsons_test"  # Change
 
@@ -33,14 +32,11 @@ def extract_data_with_parsons():
     # van = VAN(api_key=get_secret("van_api_key"))
     # activist_data = van.get_activists()
 
-    # For demonstration, we'll call get_secret to simulate data extraction
-    # In a real scenario, you would use a Parsons connector like:
-    # an = ActionNetwork(api_key=get_secret("action_network_api_key"))
-
     # For demonstration, we'll create sample data
     data = [
-        {"id": i, "value": i * 10, "timestamp": datetime.now().isoformat()}
-        for i in range(1, 11)
+        {"name": "John Smith", "party": "Democrat", "age": 42},
+        {"name": "Sarah Johnson", "party": "Republican", "age": 35},
+        {"name": "Miguel Rodriguez", "party": "Independent", "age": 29},
     ]
 
     # Convert to Parsons Table
@@ -59,15 +55,8 @@ def transform_data(tbl: Table):
     print("Transforming data with Parsons")
 
     # Example transformations using Parsons Table methods
-    tbl.add_column("calculated_value", lambda row: row["value"] * 2)
-
-    # Demonstrate some Parsons Table operations
-    print(f"Table columns: {tbl.columns}")
-    print(f"First 2 rows: {tbl.head(2)}")
-
-    # Filter data (example)
-    filtered_table = tbl.select_rows(lambda row: row["value"] > 30)
-    print(f"Filtered table has {filtered_table.num_rows} rows")
+    tbl.add_column("name_upper", lambda row: row["name"].upper())
+    print(tbl)
 
     return tbl
 
@@ -93,7 +82,7 @@ def load_data_with_parsons(tbl, env):
     # In production, you would use:
     if env == "prod":
         # Use service account credentials for production
-        gcp_creds = get_secret("gcp_service_account")
+        gcp_creds = get_secret("google_application_credentials")
         bq = GoogleBigQuery(credentials=gcp_creds)
     else:
         bq = (
