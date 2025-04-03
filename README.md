@@ -226,8 +226,6 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
   - `GAR_LOCATION`: The location of your Artifact Registry repo (e.g., `us-central1`).
   - `GAR_REPOSITORY`: The name of your Artifact Registry repo (e.g., `my-pipelines-repo`).
   - `IMAGE_NAME`: The name of your Docker Image (e.g., `my-pipeline-image`).
-  - `PREFECT_API_KEY`: Your Prefect Cloud API key (alternative to `prefect cloud login`). Get this from your Prefect Cloud profile.
-  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL (e.g., `https://api.prefect.cloud/api/accounts/[ACCOUNT_ID]/workspaces/[WORKSPACE_ID]`).
   - _Add any other environment variables required by your specific pipelines or dbt connections._
   - **Important:** Ensure `.env` is listed in your `.gitignore` file to prevent accidentally committing secrets.
 
