@@ -156,8 +156,9 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
 - Create and activate a virtual environment.
   ```bash
   uv venv
-  source .venv/bin/activate  # On macOS/Linux
-  # or .venv\Scripts\activate on Windows
+  ```
+  ```bash
+  source .venv/bin/activate  # On macOS/Linux or .venv\Scripts\activate on Windows
   ```
 - The `pyproject.toml` is where we have our project's dependencies and is where `uv` looks to know what to install
 - Install project dependencies using `uv`.
