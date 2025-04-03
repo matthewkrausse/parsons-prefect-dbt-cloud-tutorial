@@ -259,8 +259,8 @@ You will need to enable these APIs. You should be prompted, if they aren't alrea
   - `GAR_LOCATION`: The location of your Artifact Registry repo (e.g., `us-central1`).
   - `GAR_REPOSITORY`: The name of your Artifact Registry repo (e.g., `my-pipelines-repo`).
   - `IMAGE_NAME`: The name of your Docker Image (e.g., `my-pipeline-image`).
-  - `PREFECT_API_KEY`: Your Prefect Cloud API key.
-  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL.
+  - `PREFECT_API_KEY`: [Your Prefect Cloud API key.](https://app.prefect.cloud/my/api-keys)
+  - `PREFECT_API_URL`: Your Prefect Cloud workspace API URL. (run `prefect config view` in the terminal to get your URL)
 - **Branching Strategy:** The CI/CD is often configured to trigger on specific branches (e.g., `dev`, `main`). Ensure your branching strategy aligns with the triggers in `.github/workflows/*.yaml`. The example suggests creating a `dev` branch and opening a Pull Request.
 
 **12. Deploy to Prefect Cloud via CI/CD:**
