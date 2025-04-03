@@ -80,8 +80,8 @@ def load_data_with_parsons(tbl, env):
 
     # Initialize Parsons BigQuery connector
 
-    gcp_creds = get_secret("google_application_credentials")
-    bq = GoogleBigQuery(credentials=gcp_creds)
+    gcp_creds = get_secret(secret_id="google_application_credentials")
+    bq = GoogleBigQuery(app_creds=gcp_creds)
 
     # Create dataset if it doesn't exist
     bq.client.create_dataset(dataset=dataset_name, exists_ok=True)
