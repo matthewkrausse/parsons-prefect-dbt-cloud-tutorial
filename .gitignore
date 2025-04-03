@@ -181,3 +181,4 @@ dbt/dbt_packages/
 dbt/target/
 
 keyfile.json
+*.json
