@@ -10,7 +10,7 @@ from prefect.docker import DockerImage
 import os
 import dotenv
 
-from utilities import determine_git_environment
+from pipelines.flows.utilities import determine_git_environment
 
 dotenv.load_dotenv()
 
