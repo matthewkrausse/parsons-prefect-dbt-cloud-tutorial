@@ -79,15 +79,9 @@ def load_data_with_parsons(tbl, env):
     print(f"Loading data to {destination} using Parsons")
 
     # Initialize Parsons BigQuery connector
-    # In production, you would use:
-    if env == "prod":
-        # Use service account credentials for production
-        gcp_creds = get_secret("google_application_credentials")
-        bq = GoogleBigQuery(credentials=gcp_creds)
-    else:
-        bq = (
-            GoogleBigQuery()
-        )  # local env looks for env var GOOGLE_APPLICATION_CREDENTIALS
+
+    gcp_creds = get_secret("google_application_credentials")
+    bq = GoogleBigQuery(credentials=gcp_creds)
 
     # Create dataset if it doesn't exist
     bq.client.create_dataset(dataset=dataset_name, exists_ok=True)
