@@ -181,7 +181,6 @@ You're all set! Your local directory `<your-local-directory-name>` is now connec
 - Run the healthcheck script to verify dependencies are installed correctly.
   ```bash
   python pipelines/flows/healthcheck.py
-  # Look for output confirming system information.
   ```
 
 **5. Configure Google Cloud Platform (GCP) Authentication:**
